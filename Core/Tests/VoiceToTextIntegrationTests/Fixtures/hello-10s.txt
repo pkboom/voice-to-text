@@ -1,0 +1,1 @@
+Hello, this is a quick test of the voice to text app. I am speaking a few short sentences so the speech model has something real to transcribe. The weather is nice today, and I would like a cup of coffee.

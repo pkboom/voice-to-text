@@ -1,0 +1,52 @@
+name: VoiceToText
+options:
+  bundleIdPrefix: com.keunbae
+  deploymentTarget:
+    macOS: "26.0"
+  createIntermediateGroups: true
+packages:
+  VoiceToTextCore:
+    path: Core
+settings:
+  base:
+    MACOSX_DEPLOYMENT_TARGET: "26.0"
+    SWIFT_VERSION: "6"
+    SWIFT_STRICT_CONCURRENCY: complete
+targets:
+  VoiceToText:
+    type: application
+    platform: macOS
+    sources:
+      - path: App
+        excludes:
+          - Info.plist
+          - VoiceToText.entitlements
+    dependencies:
+      - package: VoiceToTextCore
+    settings:
+      base:
+        PRODUCT_NAME: VoiceToText
+        PRODUCT_BUNDLE_IDENTIFIER: com.keunbae.VoiceToText
+        INFOPLIST_FILE: App/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_ENTITLEMENTS: App/VoiceToText.entitlements
+        MACOSX_DEPLOYMENT_TARGET: "26.0"
+        SWIFT_VERSION: "6"
+        SWIFT_STRICT_CONCURRENCY: complete
+        SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
+        ENABLE_HARDENED_RUNTIME: NO
+        ENABLE_APP_SANDBOX: NO
+        CODE_SIGN_STYLE: Manual
+        CODE_SIGN_IDENTITY: $(VTT_SIGN_IDENTITY)
+        DEVELOPMENT_TEAM: DDQAHA4635
+        PROVISIONING_PROFILE_SPECIFIER: ""
+        ENABLE_USER_SCRIPT_SANDBOXING: YES
+        DEAD_CODE_STRIPPING: YES
+schemes:
+  VoiceToText:
+    build:
+      targets:
+        VoiceToText: all
+    run:
+      config: Debug
