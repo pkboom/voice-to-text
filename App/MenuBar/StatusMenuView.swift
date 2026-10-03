@@ -1,10 +1,11 @@
 import SwiftUI
 import VoiceToTextCore
 
-/// The whole v1 UI (Decision E): engine status, Engine submenu, hotkey label, permissions,
+/// The menu: engine status, Engine submenu, OpenAI API Key, hotkey label, How to Use, permissions,
 /// Keep mic warm, Quit. No Settings window.
 struct StatusMenuView: View {
     @Bindable var environment: AppEnvironment
+    @Environment(\.openWindow) private var openWindow
 
     var body: some View {
         Text(engineStatusLine)
@@ -27,7 +28,15 @@ struct StatusMenuView: View {
                 ))
             }
         }
+        Button("OpenAI API Key…") {
+            NSApplication.shared.activate()
+            openWindow(id: OpenAIKeyView.windowID)
+        }
         Text(environment.hotkey.isTapActive ? "Hotkey: Right Option" : "Hotkey: Right Option (needs Input Monitoring)")
+        Button("How to Use VoiceToText…") {
+            NSApplication.shared.activate()
+            openWindow(id: HowToUseView.windowID)
+        }
 
         Divider()
 

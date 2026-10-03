@@ -323,8 +323,8 @@ final class Harness {
         let stuck = try #require(await harness.session)
         let timeout = try #require(harness.coordinator.sttTimeoutTask)
 
-        // 1 s of audio → 10 s deadline, measured from the release.
-        harness.clock.advance(by: .milliseconds(9_999))
+        // The mock is a batch engine: 1 s of audio → 30 s deadline, measured from the release.
+        harness.clock.advance(by: .milliseconds(29_999))
         #expect(harness.coordinator.state == .processing)
         #expect(stuck.stats.cancelCalls == 0)
         harness.clock.advance(by: .milliseconds(1))

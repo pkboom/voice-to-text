@@ -67,8 +67,8 @@ check:
 	! grep -rn "AVAudioFile\|temporaryDirectory\|FileManager" Core/Sources App/Audio
 	@echo "AC6a: Speech only in Transcription/Apple and PermissionsManager"; \
 	! grep -rln "import Speech" Core/Sources App | grep -v "Transcription/Apple/" | grep -v "App/System/PermissionsManager.swift"
-	@echo "AC14: no network code"; \
-	! grep -rnE "URLSession|URLRequest|NWConnection|import Network|CFNetwork" Core/Sources App
+	@echo "AC14: network code only in Transcription/OpenAI"; \
+	! grep -rlE "URLSession|URLRequest|NWConnection|import Network|CFNetwork" Core/Sources App | grep -v "Transcription/OpenAI/"
 	@echo "R9: no maskAlternate"; \
 	! grep -rn "maskAlternate" App/System
 	@echo "AC14: PassthroughCleaner() wired exactly once"; \

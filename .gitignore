@@ -5,3 +5,4 @@ DerivedData
 .signing-identity
 Core/Tests/VoiceToTextIntegrationTests/Fixtures/*.wav
 .DS_Store
+.env

@@ -33,7 +33,7 @@ final class AppEnvironment {
     @ObservationIgnored private var engineTask: Task<Void, Never>?
     @ObservationIgnored private var isStarted = false
 
-    init(settings: SettingsStore = SettingsStore(), registry: EngineRegistry = .standard) {
+    init(settings: SettingsStore = SettingsStore(), registry: EngineRegistry = .standard(openAIKey: OpenAIKeyStore.read)) {
         self.settings = settings
         self.registry = registry
 
@@ -108,6 +108,12 @@ final class AppEnvironment {
             await previous?.value
             await engine.prepare()
         }
+    }
+
+    /// The API key window saved or removed the key: re-run `prepare()` if the OpenAI engine is selected.
+    func openAIKeyDidChange() {
+        guard selectedEngineID == .openAIMini else { return }
+        retryEngine()
     }
 
     private func observeEngineStates() {

@@ -68,8 +68,11 @@ public final class DictationCoordinator {
     /// How long `finish()` may take before the session is cancelled: `max(10 s, audio × 0.5 + 5 s)`.
     /// Deliberately generous (on-device STT measures ~0.2 s for 10 s of audio), so it only fires on
     /// a real hang, e.g. a wedged analyzer; 90 s of audio (the maximum hold) gets 50 s.
-    static func sttDeadline(forAudio audio: Duration) -> Duration {
-        max(.seconds(10), audio * 0.5 + .seconds(5))
+    /// Batch (cloud) engines upload in `finish()`, so they get `max(30 s, audio × 0.5 + 15 s)`.
+    static func sttDeadline(forAudio audio: Duration, isStreaming: Bool = true) -> Duration {
+        isStreaming
+            ? max(.seconds(10), audio * 0.5 + .seconds(5))
+            : max(.seconds(30), audio * 0.5 + .seconds(15))
     }
 
     public init(
@@ -262,7 +265,7 @@ public final class DictationCoordinator {
 
         let audio = captureStartedAt.map { instant - $0 } ?? .zero
         captureStartedAt = nil
-        let limit = Self.sttDeadline(forAudio: audio)
+        let limit = Self.sttDeadline(forAudio: audio, isStreaming: engine.descriptor.isStreaming)
         let deadline = clock.now().advanced(by: limit)
         processingGeneration &+= 1
         let generation = processingGeneration

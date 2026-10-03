@@ -7,12 +7,16 @@ import Testing
         .init(descriptor: .mock) { MockTranscriptionEngine(descriptor: .mock) },
     ])
 
-    @Test func standardRegistryShipsAppleOnly() throws {
-        #expect(EngineRegistry.standard.descriptors == [.apple])
+    @Test func standardRegistryShipsAppleThenOpenAIMini() throws {
+        let standard = EngineRegistry.standard(openAIKey: { nil })
+        #expect(standard.descriptors == [.apple, .openAIMini])
         #expect(EngineDescriptor.apple.id == EngineID("apple"))
         #expect(EngineDescriptor.apple.isStreaming)
-        let engine = try #require(EngineRegistry.standard.makeEngine(for: .apple))
+        #expect(!EngineDescriptor.openAIMini.isStreaming)
+        let engine = try #require(standard.makeEngine(for: .apple))
         #expect(engine is AppleSpeechEngine)
+        let mini = try #require(standard.makeEngine(for: .openAIMini) as? OpenAITranscriptionEngine)
+        #expect(mini.model == "gpt-4o-mini-transcribe")
     }
 
     @Test func appleResolves() throws {
