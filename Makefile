@@ -6,7 +6,7 @@ PROJECT   := VoiceToText.xcodeproj
 SCHEME    := VoiceToText
 BUNDLE_ID := com.keunbae.VoiceToText
 LOG_DIR   := build/logs
-APP       := $(HOME)/Applications/VoiceToText.app
+APP       := /Applications/VoiceToText.app
 FIXTURE   := Core/Tests/VoiceToTextIntegrationTests/Fixtures/hello-10s.wav
 
 # SHA-1 of the signing identity chosen by `make bootstrap` (override on the command line if needed).
